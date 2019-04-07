@@ -23,6 +23,7 @@ int main(int argc, char * argv[]){
     int i;
     int rank, p;
     int tag = 0;
+    int min = 0;
  
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -40,13 +41,24 @@ int main(int argc, char * argv[]){
     int numToMinimize = N / p;
     int low = rank * numToMinimize;
     int high = low + numToMinimize -1;
-    int value = lowerNumber(a, low, high);
+    int processValue = lowerNumber(a, low, high);
 
     MPI_Barrier(MPI_COMM_WORLD);
 
     printf("For process %d: ", rank);
     for ( i = 0; i < N; i++){
         printf("%d ", value);
+    }
+
+    if(rank != 0) {
+        MPI_Send(processValue, numToMinimize, MPI_INT, 0, tag, MPI_COMM_WORLD);
+    }
+    else if (rank == 0) {
+        min = processValue;
+        for (source = 1; source < p; source ++){
+            MPI_Recv(processValue, numToMinimize, MPI_INT, p, tag, MPI_COMM_WORLD)
+            printf("%d ", processValue)
+        }
     }
 
 }
