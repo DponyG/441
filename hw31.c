@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define N 8,000,000
+#define N 8
 
 
 void lowerNumber(int a[], low, high){
@@ -28,7 +28,6 @@ int main(int argc, char * argv[]){
 
 
     a = (int *) malloc(sizeof(int)*N);
-    results = (int *) malloc(sizeof(int)*8);
 
     if (rank == 0){
         for(i = 0; i < N; i++)
@@ -43,9 +42,10 @@ int main(int argc, char * argv[]){
 
     MPI_Barrier(MPI_COMM_WORLD);
 
-    
-
-
+    printf("For process %d: ", rank);
+    for ( i = 0; i < N; i++){
+        printf("%d ", value);
+    }
 
 }
 
