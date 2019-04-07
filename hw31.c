@@ -3,10 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+int lowerNumber(int a[], int low ,int high);
+
 #define N 8
 
 
-void lowerNumber(int a[], low, high){
+int lowerNumber(int a[], int low, int high){
     int lowestNumber = a[low];
     for (int i = low; i < high; i++){
         if(a[i] < lowestNumber){
@@ -38,7 +40,7 @@ int main(int argc, char * argv[]){
     int numToMinimize = N / p;
     int low = rank * numToMinimize;
     int high = low + numToMinimize -1;
-    int value = lowerNumber(a, temp, low, high)
+    int value = lowerNumber(a, low, high);
 
     MPI_Barrier(MPI_COMM_WORLD);
 
