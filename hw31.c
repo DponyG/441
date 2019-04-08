@@ -7,7 +7,7 @@
 
 int lowerNumber(int a[], int low ,int high);
 
-#define N 8,000,000
+#define N 8000000
 
 
 int lowerNumber(int a[], int low, int high){
