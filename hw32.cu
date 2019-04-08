@@ -1,21 +1,23 @@
 #include "stdio.h"
+#include <limits.h>
 
 #define N 8
 #define THREADS 8
 
 __global__ int findLowest(int low, int high, int a[], int *cudaResult ){
-    *result = a[low];
+    *cudaResult = a[low];
     for (int i = low; i < high; i++){
         if(a[i] < lowestNumber){
             lowestNumber = a[i];
         }
     }
-    return *result;
+    return *cudaResult;
 }
 
 int main(){
     int *a;
-    int low, high, cudaResult, min;
+    int min = INT_MAX;
+    int low, high, cudaResult;
     int *dev_c;
 
     a = (int *) malloc(sizeof(int)*N);
