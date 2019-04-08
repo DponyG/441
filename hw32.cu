@@ -14,6 +14,7 @@ __global__ void findLowest(int numToMinimize, int *a, int *cudaResult ){
             *cudaResult = a[i];
         }
     }
+    printf("%d \n", *cudaResult);
 }
 
 int main(){
