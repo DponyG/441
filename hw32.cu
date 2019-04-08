@@ -9,7 +9,7 @@ __global__ void findLowest(int numToMinimize, int *a, int *cudaResult ){
     int low = threadIdx.x * numToMinimize;
     int high = low + numToMinimize -1;
     int min = a[low];
-    for (int i = low; i < high; i++){
+    for (unsigned int i = low; i < high; i++){
         if(a[i] < min){
             min = a[i];
         }
