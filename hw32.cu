@@ -4,14 +4,13 @@
 #define N 8
 #define THREADS 8
 
-__global__ int findLowest(int low, int high, int a[], int *cudaResult ){
+__global__ void findLowest(int low, int high, int a[], int *cudaResult ){
     *cudaResult = a[low];
     for (int i = low; i < high; i++){
         if(a[i] < *cudaResult){
             *cudaResult = a[i];
         }
     }
-    return *cudaResult;
 }
 
 int main(){
