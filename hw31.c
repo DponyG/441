@@ -35,20 +35,13 @@ int main(int argc, char * argv[]){
     a = (int *) malloc(sizeof(int)*N);
 
     if (rank == 0){
-        int testMin;
+    
         for(i = 0; i < N; i++) {
-            if(i = 0){
-                testMin = a[i];
-            }
-
+            
             a[i] = rand() % 100000;
 
-            if(testMin > a[i]) {
-                testMin = a[i];
-            }
         }
-
-        printf("The minimum value is: %d \n", testMin); 
+ 
     }
 
     MPI_Bcast(a, N, MPI_INT, 0, MPI_COMM_WORLD);
