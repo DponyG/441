@@ -25,6 +25,7 @@ int main(int argc, char * argv[]){
     int i;
     int rank, p;
     int tag = 0;
+    int testMin = INT_MAX;
     int min = INT_MAX;
     int source;
     MPI_Status status;
@@ -37,13 +38,13 @@ int main(int argc, char * argv[]){
     a = (int *) malloc(sizeof(int)*N);
 
     if (rank == 0){
-    
         for(i = 0; i < N; i++) {
-            
             a[i] = rand() % 100000;
-
+            if (testMin > a[i]){
+                testMin = a[i];
+            } 
         }
- 
+        printf("The minimum value is: %d \n", testMin);
     }
 
     MPI_Bcast(a, N, MPI_INT, 0, MPI_COMM_WORLD);
@@ -67,7 +68,7 @@ int main(int argc, char * argv[]){
                 min = processValue;
             }
         }
-        printf("The MPI value is: %d", min);
+        printf("The MPI value is: %d \n", min);
     }
 
     free(a);
