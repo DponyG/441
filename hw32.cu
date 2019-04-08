@@ -28,7 +28,7 @@ int main(){
     min = a[0];
     
     int numToMinimize = N / THREADS;
-    low = rank * numToMinimize;
+    low = threadIdx.x * numToMinimize;
     high = low + numToMinimize -1;
 
     cudaMalloc((void**)&dev_c, sizeof(int));
