@@ -62,6 +62,9 @@ int main(int argc, char * argv[]){
     }
 
     else if (rank == 0) {
+        if (min < processValue){
+            min = processValue;
+        }
         for (source = 1; source <p; source ++){
             MPI_Recv(&processValue, 1, MPI_INT, source, tag, MPI_COMM_WORLD,&status);
             if(min > processValue){
