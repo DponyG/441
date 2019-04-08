@@ -21,7 +21,7 @@ int main(){
 
     a = (int *) malloc(sizeof(int)*N);
 
-    for(i = 0; i < N; i++)
+    for(unsigned int i = 0; i < N; i++)
             a[i] = rand() % 100000;
 
     min = a[0];
