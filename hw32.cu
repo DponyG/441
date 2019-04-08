@@ -4,7 +4,10 @@
 #define N 8
 #define THREADS 8
 
-__global__ void findLowest(int low, int high, int a[], int *cudaResult ){
+__global__ void findLowest(int numToMinimize, int a[], int *cudaResult ){
+    
+    int low = threadIdx.x * numToMinimize;
+    int high = low + numToMinimize -1;
     *cudaResult = a[low];
     for (int i = low; i < high; i++){
         if(a[i] < *cudaResult){
@@ -27,11 +30,9 @@ int main(){
     min = a[0];
     
     int numToMinimize = N / THREADS;
-    low = threadIdx.x * numToMinimize;
-    high = low + numToMinimize -1;
-
+   
     cudaMalloc((void**)&dev_c, sizeof(int));
-    findLowest<<<1,8>>>(low, high, a, dev_c);
+    findLowest<<<1,8>>>(numToMinimize, a, dev_c);
     cudaMemcpy(&cudaResult, dev_c, sizeof(int), cudaMemcpyDeviceToHost);
     if(min > cudaResult){
         min = cudaResult;
