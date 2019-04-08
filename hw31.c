@@ -62,7 +62,7 @@ int main(int argc, char * argv[]){
     }
 
     else if (rank == 0) {
-        if (min < processValue){
+        if (min > processValue){
             min = processValue;
         }
         for (source = 1; source <p; source ++){
