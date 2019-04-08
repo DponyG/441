@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
+
 
 int lowerNumber(int a[], int low ,int high);
 
@@ -23,7 +25,7 @@ int main(int argc, char * argv[]){
     int i;
     int rank, p;
     int tag = 0;
-    int min = 0;
+    int min = INT_MAX;
     int source;
     MPI_Status status;
  
@@ -61,11 +63,11 @@ int main(int argc, char * argv[]){
     else if (rank == 0) {
         for (source = 1; source <p; source ++){
             MPI_Recv(&processValue, 1, MPI_INT, source, tag, MPI_COMM_WORLD,&status);
+            if(min > processValue){
+                min = processValue;
+            }
         }
-    }
-
-    if(rank == 0) {
-        printf("The MPI value is: %d \n", min);
+        printf("The MPI value is: %d", min);
     }
 
     free(a);
