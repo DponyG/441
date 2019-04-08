@@ -8,24 +8,26 @@ __global__ void findLowest(int numToMinimize, int *a, int *cudaResult ){
     
     int low = threadIdx.x * numToMinimize;
     int high = low + numToMinimize -1;
-    *cudaResult = a[low];
+    int min = a[low];
     for (int i = low; i < high; i++){
-        if(a[i] < *cudaResult){
-            *cudaResult = a[i];
+        if(a[i] < min){
+            min = a[i];
         }
     }
-    printf("%d \n", *cudaResult);
+    cudaResult[threadIdx.x] = min;
+    printf("%d \n", min);
 }
 
 int main(){
     int *a;
+    int *cudaResult;
     int min = INT_MAX;
     int testMin = INT_MAX;
-    int cudaResult;
     int *dev_result;
     int *dev_a;
 
     a = (int *) malloc(sizeof(int)*N);
+    cudaResult = (int *) malloc(sizeof(int)*N);
 
     for(unsigned int i = 0; i < N; i++){
         a[i] = rand() % 100000;
@@ -38,14 +40,17 @@ int main(){
 
     int numToMinimize = N / THREADS;
    
-    cudaMalloc((void**)&dev_result, sizeof(int));
+    cudaMalloc((void**)&dev_result, N*sizeof(int));
     cudaMalloc((void**)&dev_a, N*sizeof(int));
     cudaMemcpy(dev_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_result, cudaResult, N*sizeof(int), cudaMemcpyHostToDevice);
     findLowest<<<1,8>>>(numToMinimize, dev_a, dev_result);
-    cudaMemcpy(&cudaResult, dev_result, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaMemcpy(cudaResult, dev_result, N*sizeof(int), cudaMemcpyDeviceToHost);
 
-    if(min > cudaResult){
-        min = cudaResult;
+    for(unsigned int i = 0; i < N; i++){
+        if(min > cudaResult[i]) {
+            min = cudaResult[i];
+        }
     }
 
     printf("The Cuda Value is %d \n", min); 
