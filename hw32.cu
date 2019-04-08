@@ -21,7 +21,8 @@ int main(){
     int min = INT_MAX;
     int testMin = INT_MAX;
     int cudaResult;
-    int *dev_c;
+    int *dev_result;
+    int *dev_a;
 
     a = (int *) malloc(sizeof(int)*N);
 
@@ -34,15 +35,17 @@ int main(){
 
     printf("The minimum value is: %d \n", testMin);
 
-    
     int numToMinimize = N / THREADS;
    
-    cudaMalloc((void**)&dev_c, sizeof(int));
-    findLowest<<<1,8>>>(numToMinimize, a, dev_c);
-    cudaMemcpy(&cudaResult, dev_c, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaMalloc((void**)&dev_result, sizeof(int));
+    cudaMalloc((void**)&dev_a, sizeof(int));
+    cudaMemcpy(dev_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
+    findLowest<<<1,8>>>(numToMinimize, dev_a, dev_result);
+    cudaMemcpy(&cudaResult, dev_result, sizeof(int), cudaMemcpyDeviceToHost);
+
     if(min > cudaResult){
         min = cudaResult;
     }
 
-    printf("The Cuda Value %d \n", min); 
+    printf("The Cuda Value is %d \n", min); 
 }
