@@ -45,7 +45,7 @@ int main(){
     cudaMemcpy(dev_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_result, cudaResult, THREADS*sizeof(int), cudaMemcpyHostToDevice);
     findLowest<<<1,8>>>(numToMinimize, dev_a, dev_result);
-    cudaMemcpy(cudaResult, dev_result, N*sizeof(int), cudaMemcpyDeviceToHost);
+    cudaMemcpy(cudaResult, dev_result, THREADS*sizeof(int), cudaMemcpyDeviceToHost);
 
     for(unsigned int i = 0; i < THREADS; i++){
         if(min > cudaResult[i]) {
