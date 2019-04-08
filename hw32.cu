@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include <limits.h>
 
-#define N 100
+#define N 8000000
 #define THREADS 8
 
 __global__ void findLowest(int numToMinimize, int *a, int *cudaResult ){
@@ -15,7 +15,7 @@ __global__ void findLowest(int numToMinimize, int *a, int *cudaResult ){
         }
     }
     cudaResult[threadIdx.x] = min;
-    printf("%d \n", min);
+    printf("Thread %d returned: %d \n", threadIdx.x, min);
 }
 
 int main(){
