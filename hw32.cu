@@ -26,10 +26,12 @@ int main(){
     a = (int *) malloc(sizeof(int)*N);
 
     for(unsigned int i = 0; i < N; i++){
+        a[i] = rand() % 100000;
         if (testMin > a[i]){
             testMin = a[i];
         } 
     }
+
     printf("The minimum value is: %d \n", testMin);
 
     
@@ -42,5 +44,5 @@ int main(){
         min = cudaResult;
     }
 
-    printf("%d \n", min); 
+    printf("The Cuda Value %d \n", min); 
 }
