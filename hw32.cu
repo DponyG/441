@@ -7,8 +7,8 @@
 __global__ int findLowest(int low, int high, int a[], int *cudaResult ){
     *cudaResult = a[low];
     for (int i = low; i < high; i++){
-        if(a[i] < lowestNumber){
-            lowestNumber = a[i];
+        if(a[i] < *cudaResult){
+            *cudaResult = a[i];
         }
     }
     return *cudaResult;
