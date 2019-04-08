@@ -43,7 +43,7 @@ int main(){
     cudaMalloc((void**)&dev_result, N*sizeof(int));
     cudaMalloc((void**)&dev_a, N*sizeof(int));
     cudaMemcpy(dev_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_result, cudaResult, N*sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_result, cudaResult, THREADS*sizeof(int), cudaMemcpyHostToDevice);
     findLowest<<<1,8>>>(numToMinimize, dev_a, dev_result);
     cudaMemcpy(cudaResult, dev_result, N*sizeof(int), cudaMemcpyDeviceToHost);
 
