@@ -65,13 +65,19 @@ int main(int argc, char * argv[]){
         if (min > processValue){
             min = processValue;
         }
+
         for (source = 1; source <p; source ++){
             MPI_Recv(&processValue, 1, MPI_INT, source, tag, MPI_COMM_WORLD,&status);
             if(min > processValue){
                 min = processValue;
             }
         }
+
         printf("The MPI value is: %d \n", min);
+
+        for(int i = 0; i <100; i++){
+            printf("%d ", a[i]);
+        }
     }
 
     free(a);
