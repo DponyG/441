@@ -4,7 +4,7 @@
 #define N 8
 #define THREADS 8
 
-__global__ void findLowest(int numToMinimize, int a[], int *cudaResult ){
+__global__ void findLowest(int numToMinimize, int *a, int *cudaResult ){
     
     int low = threadIdx.x * numToMinimize;
     int high = low + numToMinimize -1;
