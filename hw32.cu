@@ -27,7 +27,7 @@ int main(){
     int *dev_a;
 
     a = (int *) malloc(sizeof(int)*N);
-    cudaResult = (int *) malloc(sizeof(int)*N);
+    cudaResult = (int *) malloc(sizeof(int)*THREADS);
 
     for(unsigned int i = 0; i < N; i++){
         a[i] = rand() % 100000;
