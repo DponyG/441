@@ -53,17 +53,20 @@ int main(int argc, char * argv[]){
         MPI_Send(&processValue, 1, MPI_INT, 0, tag, MPI_COMM_WORLD);
     }
     else if (rank == 0) {
-      
+     min = processValue; 
         for (source = 1; source <p; source ++){
             MPI_Recv(&processValue, 1, MPI_INT, source, tag, MPI_COMM_WORLD,&status);
-            printf("%d ", processValue);
+            if(min > processValue){
+	        min = processValue;
+	    }
         }
     }
- 
+
+    MPI_Barrier(MPI_COMM_WORLD);
+
     free(a);
     MPI_Finalize();
-    return 0;
-   
+    return 0;   
 }
 
 
