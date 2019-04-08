@@ -19,15 +19,19 @@ __global__ void findLowest(int numToMinimize, int a[], int *cudaResult ){
 int main(){
     int *a;
     int min = INT_MAX;
-    int low, high, cudaResult;
+    int testMin = INT_MAX;
+    int cudaResult;
     int *dev_c;
 
     a = (int *) malloc(sizeof(int)*N);
 
-    for(unsigned int i = 0; i < N; i++)
-            a[i] = rand() % 100000;
+    for(unsigned int i = 0; i < N; i++){
+        if (testMin > a[i]){
+            testMin = a[i];
+        } 
+    }
+    printf("The minimum value is: %d \n", testMin);
 
-    min = a[0];
     
     int numToMinimize = N / THREADS;
    
