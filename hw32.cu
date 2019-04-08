@@ -15,7 +15,7 @@ __global__ int findLowest(int low, int high, int a[], int *cudaResult ){
 
 int main(){
     int *a;
-    int low, high, cudaResult, min
+    int low, high, cudaResult, min;
     int *dev_c;
 
     a = (int *) malloc(sizeof(int)*N);
@@ -26,8 +26,8 @@ int main(){
     min = a[0];
     
     int numToMinimize = N / THREADS;
-    int low = rank * numToMinimize;
-    int high = low + numToMinimize -1;
+    low = rank * numToMinimize;
+    high = low + numToMinimize -1;
 
     cudaMalloc((void**))&dev_c, sizeof(int));
     findLowest<<<1,8>>>(low, high, a, dev_c);
