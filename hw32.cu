@@ -29,7 +29,7 @@ int main(){
     low = rank * numToMinimize;
     high = low + numToMinimize -1;
 
-    cudaMalloc((void**))&dev_c, sizeof(int));
+    cudaMalloc((void**)&dev_c, sizeof(int));
     findLowest<<<1,8>>>(low, high, a, dev_c);
     cudaMemcpy(&cudaResult, dev_c, sizeof(int), cudaMemcpyDeviceToHost )
     if(min > cudaResult){
