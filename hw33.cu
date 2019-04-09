@@ -18,10 +18,11 @@ __global__ void add(int * a, int*b)  {
 
 int main() {
     int a[ROWS][COLUMNS], b[ROWS][COLUMNS]
-    int *dev_a, *dev_b; 
+    int *dev_a, 
+    int *dev_b; 
 
-    cudaMalloc((void **) &dev_a, ROWS*COLUMNS*sizeof(int));
-    cudaMalloc((void **) &dev_b, COLUMNS*sizeof(int));
+    cudaMalloc((void **)&dev_a, ROWS*COLUMNS*sizeof(int));
+    cudaMalloc((void **)&dev_b, COLUMNS*sizeof(int));
 
 
     for (int y = 0; y< ROWS; y++)
