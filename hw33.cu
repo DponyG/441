@@ -18,7 +18,7 @@ __global__ void add(int * a, int*b)  {
 
 int main() {
     int a[ROWS][COLUMNS], b[ROWS][COLUMNS]
-    int *dev_a, 
+    int *dev_a;
     int *dev_b; 
 
     cudaMalloc((void **)&dev_a, ROWS*COLUMNS*sizeof(int));
@@ -28,7 +28,6 @@ int main() {
     for (int y = 0; y< ROWS; y++)
         for(int x = 0; x < COLUMNS; x++){
             a[y][x] = x;
-            b[y][x] = y;
         }
     
     cudaMemcpy(dev_a, a, ROWS*COLUMNS*sizeof(int), cudaMemcpyHostToDevice);
