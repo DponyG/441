@@ -34,8 +34,8 @@ int main() {
 
     for (int y = 0; y< ROWS; y++)
         for(int x = 0; x < COLUMNS; x++){
-            a[y][x] = x;
-            sum += x;
+            a[y][x] = x+y;
+            sum += x+y;
         }
 
     printf("The exact sum is: %d \n", sum);
