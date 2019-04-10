@@ -17,7 +17,7 @@ __global__ void add(int * a, int*b)  {
         i/=2;
     }
     if(threadIdx.x == 0) {
-        b[blockIdx.x] = a[0];
+        b[blockIdx.x] = a[blockIdx.x*COLUMNS];
     }
 }
 
