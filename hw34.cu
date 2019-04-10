@@ -43,7 +43,7 @@ int main() {
     cudaMemcpy(dev_a, a, ROWS*COLUMNS*sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_b, b, COLUMNS*sizeof(int), cudaMemcpyHostToDevice);
 
-    add<<<1,COLUMNS>>>(dev_a, dev_b);
+    add<<<8,8>>>(dev_a, dev_b);
 
     cudaMemcpy(b, dev_b, COLUMNS*sizeof(int), cudaMemcpyDeviceToHost);
     
