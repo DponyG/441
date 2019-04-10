@@ -11,7 +11,7 @@ __global__ void add(int * a, int*b)  {
     int i = blockDim.x/2;
     while(i > 0){
         if(cacheIndex < i){
-            a[cacheIndex] += a[cacheIndex + i];
+            a[blockIdx.x*COLUMNS+cacheIndex] += a[blockIdx.x*COLUMNS+cacheIndex + i];
         }
         __syncthreads();
         i/=2;
