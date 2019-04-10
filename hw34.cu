@@ -13,8 +13,8 @@ __global__ void add(int * a, int*b)  {
         if(cacheIndex < i){
             a[cacheIndex] += a[cacheIndex + i];
         }
-        __synchthreads();
-        i/=2
+        __syncthreads();
+        i/=2;
     }
     if(threadIdx.x == 0) {
         b[blockIdx.x] = a[0];
