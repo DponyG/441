@@ -48,6 +48,9 @@ int main() {
 
     printf("The cuda sum is: %d \n", cudaSum);
 
+    cudaFree(a);
+    cudaFree(b);
+
     
     
 

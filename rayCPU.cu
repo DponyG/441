@@ -9,6 +9,10 @@
 #define rnd(x) (x * rand() / RAND_MAX)
 #define INF 2e10f
 
+__global__ accelGPU(){
+
+}
+
 struct Sphere {
     float   r,b,g;
     float   radius;
@@ -37,6 +41,14 @@ struct Sphere {
 // If so, calculate a shade of color based on where the ray hits it.
 void drawSpheres(Sphere spheres[], char *red, char *green, char *blue)
 {
+    char *dev_red;
+    char *dev_green;
+    char *dev_blue;
+
+    cudaMalloc((void **)&dev_red, DIM*DIM*sizeof(char));
+    cudaMalloc((void **)&dev_green, DIM*DIM*sizeof(char));
+    cudaMalloc((void **)&dev_blue, DIM*DIM*sizeof(char));
+
     for (int x = 0; x < DIM; x++)
      for (int y = 0; y < DIM; y++)
      {
@@ -77,6 +89,7 @@ int main()
   char *green;
   char *blue;
 
+ 
   // Dynamically create enough memory for DIM * DIM array of char.
   // By making these dynamic rather than auto (e.g. char red[DIM][DIM])
   // we can make them much bigger since they are allocated off the heap
@@ -84,6 +97,7 @@ int main()
   green = (char *) malloc(DIM*DIM*sizeof(char));
   blue = (char *) malloc(DIM*DIM*sizeof(char));
 
+  
   // Create random spheres at different coordinates, colors, radius
   Sphere spheres[SPHERES];
   for (int i = 0; i<SPHERES; i++)
@@ -97,7 +111,12 @@ int main()
         spheres[i].radius = rnd( 200.0f ) + 40;
   }
 
+  //GPU SHIT
+  cudaMalloc((void **)&dev_b, COLUMNS*sizeof(int));
+
   drawSpheres(spheres, red, green, blue);
+
+
 
   RGBQUAD color;
   for (int i = 0; i < DIM; i++)
