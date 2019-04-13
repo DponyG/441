@@ -70,9 +70,9 @@ void drawSpheres(Sphere spheres[], char *red, char *green, char *blue)
     cudaMalloc((void **)&dev_green, DIM*DIM*sizeof(char));
     cudaMalloc((void **)&dev_blue, DIM*DIM*sizeof(char));
     cudaMalloc((void **))&dev_sphere, SPHERES*sizeof(Sphere);
-    cudaMemcpy(dev_red, r, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_green, g, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_blue, b, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_red, red, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_green, green, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_blue, blue, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_sphere, spheres, SPHERES*sizeof(Sphere), cudaMemcpyHostToDevice);
 
     accelGPU<<<DIM,DIM>>>(dev_red, dev_green, dev_blue, dev_sphere);
