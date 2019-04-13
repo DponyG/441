@@ -9,7 +9,7 @@
 #define rnd(x) (x * rand() / RAND_MAX)
 #define INF 2e10f
 
-__global__ accelGPU(char *red, char *green, char *blue, Sphere *spheres, ){
+__global__ void accelGPU(char *red, char *green, char *blue, Sphere *spheres, ){
     float   ox = (blockIdx.x - DIM/2);
     float   oy = (threadIdx.x - DIM/2);
 
