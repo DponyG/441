@@ -116,9 +116,7 @@ int main()
         spheres[i].radius = rnd( 200.0f ) + 40;
   }
 
-  //GPU SHIT
-  cudaMalloc((void **)&dev_b, COLUMNS*sizeof(int));
-
+ 
   drawSpheres(spheres, red, green, blue);
 
 
