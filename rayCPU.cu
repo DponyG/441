@@ -54,7 +54,7 @@ __global__ void gpuAccel(Sphere *spheres, char *red, char *green, char *blue) {
             		maxz = t;
         	    }
             }
-            int offset = threadIdx.x + blockIdx.x * DIM;
+            int offset = blockIdx.x + threadIdx.x * DIM;
             // printf("%d, %d, offset: %d\n", threadIdx.x, blockIdx.x, offset);
             red[offset] = (char) (r * 255);
             green[offset] = (char) (g * 255);
@@ -83,7 +83,6 @@ void drawSpheres(Sphere spheres[], char *red, char *green, char *blue){
 
 
     //https://stackoverflow.com/questions/6613106/converting-c-c-for-loops-into-cuda
-
     dim3 blocks(2048, 1);
     dim3 grids(2048, 1);
 
