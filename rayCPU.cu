@@ -2,6 +2,8 @@
 // generates spheres and draws the sphere in a random color based on where
 // the ray hits it.
 
+#define SPHERES 80
+
 #include "FreeImage.h"
 #include "stdio.h"
 
@@ -53,7 +55,6 @@ struct Sphere {
     }
 };
 
-#define SPHERES 80
 
 // Loops through each pixel in the image (represented by arrays of
 // red, green, and blue) and then for each pixel checks if a ray from
