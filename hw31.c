@@ -1,3 +1,8 @@
+//    Samuel Grenon
+//    CS 443 
+//    Dr. Mock
+//    Problem 1:
+
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>

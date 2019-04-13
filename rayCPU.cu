@@ -9,8 +9,28 @@
 #define rnd(x) (x * rand() / RAND_MAX)
 #define INF 2e10f
 
-__global__ accelGPU(){
+__global__ accelGPU(char *red, char *green, char *blue, Sphere *spheres, ){
+    float   ox = (blockIdx.x - DIM/2);
+    float   oy = (threadIdx.x - DIM/2);
 
+    float   r=0, g=0, b=0;
+    float   maxz = -INF;
+	    for(int i=0; i<SPHERES; i++) {
+            float   n;
+            float   t = spheres[i].hit( ox, oy, &n );
+            if (t > maxz) {
+			    // Scale RGB color based on z depth of sphere
+            	float fscale = n;
+            	r = spheres[i].r * fscale;
+            	g = spheres[i].g * fscale;
+            	b = spheres[i].b * fscale;
+            	maxz = t;
+        	}
+        }
+        int offset = blockIdx.x + threadIdx.x * DIM;
+        red[offset] = (char) (r * 255);
+        green[offset] = (char) (g * 255);
+        blue[offset] = (char) (b * 255);
 }
 
 struct Sphere {
@@ -44,38 +64,23 @@ void drawSpheres(Sphere spheres[], char *red, char *green, char *blue)
     char *dev_red;
     char *dev_green;
     char *dev_blue;
+    Sphere *dev_sphere;
 
     cudaMalloc((void **)&dev_red, DIM*DIM*sizeof(char));
     cudaMalloc((void **)&dev_green, DIM*DIM*sizeof(char));
     cudaMalloc((void **)&dev_blue, DIM*DIM*sizeof(char));
+    cudaMalloc((void **))&dev_sphere, SPHERES*sizeof(Sphere);
+    cudaMemcpy(dev_red, r, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_green, g, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_blue, b, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_sphere, spheres, SPHERES*sizeof(Sphere), cudaMemcpyHostToDevice);
 
-    for (int x = 0; x < DIM; x++)
-     for (int y = 0; y < DIM; y++)
-     {
-	float   ox = (x - DIM/2);
-	float   oy = (y - DIM/2);
+    accelGPU<<<DIM,DIM>>>(dev_red, dev_green, dev_blue, dev_sphere);
 
-	float   r=0, g=0, b=0;
-	float   maxz = -INF;
-	for(int i=0; i<SPHERES; i++)
- 	{
-        	float   n;
-        	float   t = spheres[i].hit( ox, oy, &n );
-        	if (t > maxz)
-		{
-			// Scale RGB color based on z depth of sphere
-            		float fscale = n;
-            		r = spheres[i].r * fscale;
-            		g = spheres[i].g * fscale;
-            		b = spheres[i].b * fscale;
-            		maxz = t;
-        	}
-        }
-    	int offset = x + y * DIM;
-    	red[offset] = (char) (r * 255);
-    	green[offset] = (char) (g * 255);
-    	blue[offset] = (char) (b * 255);
-    }
+    cudaMemcpy(red, dev_red, DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(green, dev_green, DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(blue, dev_blue, DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
+
 }
 
 int main()

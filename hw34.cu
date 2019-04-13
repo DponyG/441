@@ -1,3 +1,8 @@
+//    Samuel Grenon
+//    CS 443 
+//    Dr. Mock
+//    Problem 4:
+
 
 #include "stdio.h"
 #define COLUMNS 8
@@ -57,6 +62,4 @@ int main() {
     cudaFree(dev_b);
 
     
-    
-
 }

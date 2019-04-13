@@ -1,3 +1,11 @@
+//    Samuel Grenon
+//    CS 443 
+//    Dr. Mock
+//    Problem 2:
+
+
+
+
 #include "stdio.h"
 #include <limits.h>
 
