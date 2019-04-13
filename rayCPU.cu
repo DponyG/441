@@ -1,12 +1,9 @@
-/*  Duane Shaffer
-    CS 443 Spring 2019 
-    Dr. Kenrick Mock
-    Problem 5 - This is a simple ray tracer that shoots rays top down toward randomly generated spheres and 
-                draws the sphere in a random color based on where the ray hits it.
-    Based off code given by Dr. Mock. My task is to accelerate it using the GPU
-    Time without acceleration: 3.907 sec
-    Time with cuda acceleration: 
-*/
+
+
+//    Samuel Grenon
+//    CS 443 
+//    Dr. Mock
+//    Problem 5:
 
 #include "FreeImage.h"
 #include "stdio.h"
@@ -38,10 +35,8 @@ struct Sphere {
 #define SPHERES 80
 
 
-__global__ void gpu_drawSpheres(Sphere *spheres, char *red, char *green, char *blue) {
+__global__ void gpuAccel(Sphere *spheres, char *red, char *green, char *blue) {
 
-    // for (int x = 0; x < DIM; x++) { // x = blockIdx.x switch with y
-        // for (int y = 0; y < DIM; y++) { // y = threadIdx.x
             float   ox = (blockIdx.x - DIM/2);
             float   oy = (threadIdx.x - DIM/2);
 
@@ -86,10 +81,13 @@ void drawSpheres(Sphere spheres[], char *red, char *green, char *blue){
     cudaMemcpy(dev_green, green, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_blue, blue, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
 
+
+    //https://stackoverflow.com/questions/6613106/converting-c-c-for-loops-into-cuda
+
     dim3 blocks(2048, 1);
     dim3 grids(2048, 1);
 
-    gpu_drawSpheres<<<grids, blocks,1>>>(dev_spheres, dev_red, dev_green, dev_blue);
+    gpuAccel<<<grids, blocks,1>>>(dev_spheres, dev_red, dev_green, dev_blue);
 
 
     cudaMemcpy(red, dev_red,DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
