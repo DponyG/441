@@ -39,6 +39,7 @@ struct Sphere {
 
 
 __global__ void gpu_drawSpheres(Sphere *spheres, char *red, char *green, char *blue) {
+
     // for (int x = 0; x < DIM; x++) { // x = blockIdx.x switch with y
         // for (int y = 0; y < DIM; y++) { // y = threadIdx.x
             float   ox = (blockIdx.x - DIM/2);
@@ -86,7 +87,7 @@ void drawSpheres(Sphere spheres[], char *red, char *green, char *blue){
     cudaMemcpy(dev_blue, blue, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
 
     dim3 blocks(2048, 1);
-    dim3 grids(2048, 1)
+    dim3 grids(2048, 1);
 
     gpu_drawSpheres<<<grids, blocks,1>>>(dev_spheres, dev_red, dev_green, dev_blue);
 
