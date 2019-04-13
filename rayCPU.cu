@@ -41,8 +41,8 @@ struct Sphere {
 __global__ void gpu_drawSpheres(Sphere *spheres, char *red, char *green, char *blue) {
     // for (int x = 0; x < DIM; x++) { // x = blockIdx.x switch with y
         // for (int y = 0; y < DIM; y++) { // y = threadIdx.x
-            float   ox = (threadIdx.x - DIM/2);
-            float   oy = (blockIdx.x - DIM/2);
+            float   ox = (blockIdx.x - DIM/2);
+            float   oy = (threadIdx.x - DIM/2);
 
             float   r=0, g=0, b=0;
             float   maxz = -INF;
@@ -84,7 +84,13 @@ void drawSpheres(Sphere spheres[], char *red, char *green, char *blue){
     cudaMemcpy(dev_red, red, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_green, green, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_blue, blue, DIM*DIM*sizeof(char), cudaMemcpyHostToDevice);
-    gpu_drawSpheres<<<DIM, DIM>>>(dev_spheres, dev_red, dev_green, dev_blue);
+
+    dim3 blocks(2048, 1);
+    dim3 grids(2048, 1)
+
+    gpu_drawSpheres<<<grids, blocks,1>>>(dev_spheres, dev_red, dev_green, dev_blue);
+
+
     cudaMemcpy(red, dev_red,DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
     cudaMemcpy(green, dev_green, DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
     cudaMemcpy(blue, dev_blue, DIM*DIM*sizeof(char), cudaMemcpyDeviceToHost);
