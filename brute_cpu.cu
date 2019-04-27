@@ -99,7 +99,7 @@
    // These variables are used to store the md5 hash for a string
    // we generate in a brute force way to test if it matches the
    // target
-   char dev_result[7];
+   char *dev_result
    int dev_md5Target[4];
    char *result = (char *) malloc(sizeof(char)*7);  // Will be auto-generated AAAAAA to ZZZZZZ
    cudaMalloc((void **) &dev_md5Target, 4*sizeof(int));
