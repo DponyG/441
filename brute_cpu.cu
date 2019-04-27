@@ -58,17 +58,17 @@
  
  __global__ void crack(char* result, int* md5Target){
    printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
-   uint32_t *hashResult1, *hashResult2, *hashResult3, *hashResult4;
+   uint32_t hashResult1, hashResult2, hashResult3, hashResult4;
    char *possibleKey = (char *) malloc(sizeof(char)*7);
 
    int length = 6;
    for (int i = 0; i < 26*26*26*26*26*26; i++){
      intToString(i, possibleKey); 
-     md5Hash((unsigned char*) possibleKey, length, hashResult1, hashResult2, hashResult3, hashResult4);
-     if ((*hashResult1 == md5Target[0]) &&
-         (*hashResult2 == md5Target[1]) &&
-         (*hashResult3 == md5Target[2]) &&
-         (*hashResult4 == md5Target[3]))
+     md5Hash((unsigned char*) possibleKey, length, &hashResult1, &hashResult2, &hashResult3, &hashResult4);
+     if ((hashResult1 == md5Target[0]) &&
+         (hashResult2 == md5Target[1]) &&
+         (hashResult3 == md5Target[2]) &&
+         (hashResult4 == md5Target[3]))
      {
        result = possibleKey;
        return;
