@@ -62,8 +62,8 @@
    char *possibleKey = (char *) malloc(sizeof(char)*7);
 
    int length = 6;
-   for (int i = 0; i < 26*26*26*26*26*26; i++){
-     intToString(i, possibleKey); 
+   for (int i = 0; i < 26*26*26*26; i++){
+     intToString(i+blockIdx.x*26*26*26*26*26+threadIdx.x*26*26*26*26, possibleKey); 
      md5Hash((unsigned char*) possibleKey, length, &hashResult1, &hashResult2, &hashResult3, &hashResult4);
      if ((hashResult1 == md5Target[0]) &&
          (hashResult2 == md5Target[1]) &&
@@ -108,7 +108,7 @@
    cudaMemcpy(dev_md5Target, md5Target, 4*sizeof(int),cudaMemcpyHostToDevice);
    cudaMemcpy(dev_result,result,7*sizeof(char),cudaMemcpyHostToDevice);
      
-   crack<<<1,1>>>(dev_result, dev_md5Target);
+   crack<<<26,26>>>(dev_result, dev_md5Target);
    printf("Error: %s \n",cudaGetErrorName(cudaGetLastError()));
    printf("ErrorDes: %s \n",cudaGetErrorString(cudaGetLastError()));
    printf("Working on cracking the md5 key %s by trying all key combinations...\n",md5_hash_string);
