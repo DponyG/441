@@ -70,7 +70,9 @@
          (hashResult3 == md5Target[2]) &&
          (hashResult4 == md5Target[3]))
      {
+      printf("Hello from block %d, This thread made it %d\n", blockIdx.x, threadIdx.x);
        result = possibleKey;
+       
        asm("trap;");
        return;
      }
