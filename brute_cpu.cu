@@ -100,7 +100,7 @@
    // we generate in a brute force way to test if it matches the
    // target
    char *dev_result;
-   int dev_md5Target[4];
+   int *dev_md5Target;
    char *result = (char *) malloc(sizeof(char)*7);  // Will be auto-generated AAAAAA to ZZZZZZ
    cudaMalloc((void **) &dev_md5Target, 4*sizeof(int));
    cudaMalloc((void **) &dev_result, 7*sizeof(char));
