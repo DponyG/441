@@ -57,7 +57,7 @@
  };
  
  __global__ void crack(char* result, int* md5Target){
-   result[0] = 'A'
+   result[0] = 'A';
    uint32_t *hashResult1, *hashResult2, *hashResult3, *hashResult4;
    char possibleKey[7];
    int length = 6;
