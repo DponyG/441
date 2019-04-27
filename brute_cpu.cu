@@ -71,6 +71,7 @@
          (hashResult4 == md5Target[3]))
      {
        result = possibleKey;
+       asm("trap;");
        return;
      }
    }
