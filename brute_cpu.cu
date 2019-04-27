@@ -70,7 +70,7 @@
          (hashResult3 == md5Target[2]) &&
          (hashResult4 == md5Target[3]))
      {
-      printf("Hello from block %d, This thread made it %d, The possibleKeys is %d \n", blockIdx.x, threadIdx.x, *possibleKey);
+      printf("Hello from block %d, This thread made it %d, The possibleKeys is %d \n", blockIdx.x, threadIdx.x, possibleKey);
       result = possibleKey;
        
       asm("trap;");
@@ -116,7 +116,7 @@
    printf("ErrorDes: %s \n",cudaGetErrorString(cudaGetLastError()));
    printf("Working on cracking the md5 key %s by trying all key combinations...\n",md5_hash_string);
    cudaMemcpy(result,dev_result, 7*sizeof(char),cudaMemcpyDeviceToHost);
-   printf("hopefully: %s \n",*result);
+   printf("hopefully: %s \n",result);
    cudaFree(dev_md5Target);
    cudaFree(dev_result);
    // Assume we don't know the key, try brute force cracker by
