@@ -57,7 +57,7 @@
  };
  
  __global__ void crack(char* result, int* md5Target){
-   result[0] = 'A';
+   printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
    uint32_t *hashResult1, *hashResult2, *hashResult3, *hashResult4;
    char possibleKey[7];
    int length = 6;
@@ -112,8 +112,7 @@
    printf("ErrorDes: %s \n",cudaGetErrorString(cudaGetLastError()));
    printf("Working on cracking the md5 key %s by trying all key combinations...\n",md5_hash_string);
    cudaMemcpy(result,dev_result, 7*sizeof(char),cudaMemcpyDeviceToHost);
-   result[0] = 'A';
-   printf("hopefully: %s \n",result[0]);
+   printf("hopefully: %s \n",result);
    cudaFree(dev_md5Target);
    cudaFree(dev_result);
    // Assume we don't know the key, try brute force cracker by
