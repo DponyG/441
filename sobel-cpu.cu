@@ -24,8 +24,11 @@ int pixelIndex(int x, int y, int width)
 }
 
 // Returns the sobel value for pixel x,y
-int sobel(int x, int y, int width, char *pixels)
+__global void sobel(int pixel_X, int pixel_y, int width, char *pixels)
 {
+   int x = threadIdx.x + blockIdx.x * blockDim.x;
+   int y = threadIdx.y + blockIdx.y * blockDim.y;
+   if( x > 0 && y > 0 && x < width-1 && y < height-1) {
    int x00 = -1;  int x20 = 1;
    int x01 = -2;  int x21 = 2;
    int x02 = -1;  int x22 = 1;
@@ -48,10 +51,14 @@ int sobel(int x, int y, int width, char *pixels)
    int px = x00 + x01 + x02 + x20 + x21 + x22;
    int py = y00 + y10 + y20 + y02 + y12 + y22;
    return sqrt(px*px + py*py);
+   }
 }
 
 int main()
 {
+    char* dev_pixel
+    RGBQUAD dev_aPixel
+
     FreeImage_Initialise();
     atexit(FreeImage_DeInitialise);
 
@@ -84,10 +91,20 @@ int main()
 
     // Apply sobel operator to pixels, ignoring the borders
     FIBITMAP *bitmap = FreeImage_Allocate(imgWidth, imgHeight, 24);
+
+    cudaMalloc((void**)&dev_pixel, sizeof(char)*imgWidth*imgHeight);
+    cudaMalloc((void**)&dev2_pixel, sizeof(char)*imgWidth*imgHeight);
+    cudaMemcpy(dev_pixel, pixel, imgWidth*imgHeight*sizeof(char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(dev_pixel2, pixel, imgWidth*imgHeight*sizeof(char), cudaMemcpyDeviceToHost);
+
+    dim3 numThreads(16, 16, 1);
+    dim3 numBlocks(imgWidth/16, imgHeight/16)
+
     for (int i = 1; i < imgWidth-1; i++)
     {
       for (int j = 1; j < imgHeight-1; j++)
       {
+    
 	int sVal = sobel(i,j,imgWidth,pixels);
 	aPixel.rgbRed = sVal;
 	aPixel.rgbGreen = sVal;
