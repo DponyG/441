@@ -63,7 +63,7 @@
 
    int length = 6;
    for (int i = 0; i < 26*26*26*26; i++){
-     intToString(i+blockIdx.x*26*26*26*26*26+threadIdx.x*26*26*26*26, possibleKey); 
+     intToString(i+blockIdx.x*threadIdx.x, possibleKey); 
      md5Hash((unsigned char*) possibleKey, length, &hashResult1, &hashResult2, &hashResult3, &hashResult4);
      if ((hashResult1 == md5Target[0]) &&
          (hashResult2 == md5Target[1]) &&
