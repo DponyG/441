@@ -112,6 +112,7 @@
    printf("ErrorDes: %s \n",cudaGetErrorString(cudaGetLastError()));
    printf("Working on cracking the md5 key %s by trying all key combinations...\n",md5_hash_string);
    cudaMemcpy(result,dev_result, 7*sizeof(char),cudaMemcpyDeviceToHost);
+   result[0] = 'A';
    printf("hopefully: %s \n",result[0]);
    cudaFree(dev_md5Target);
    cudaFree(dev_result);
