@@ -60,6 +60,7 @@
    printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
    uint32_t *hashResult1, *hashResult2, *hashResult3, *hashResult4;
    char possibleKey[7];
+   result = possibleKey
    int length = 6;
    for (int i = 0; i < 26*26*26*26*26*26; i++){
      intToString(i, possibleKey); 
@@ -69,7 +70,7 @@
          (*hashResult3 == md5Target[2]) &&
          (*hashResult4 == md5Target[3]))
      {
-       result = possibleKey;
+       *result = *possibleKey;
        return;
      }
    }
