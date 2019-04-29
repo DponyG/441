@@ -120,7 +120,7 @@
    printf("Working on cracking the md5 key %s by trying all key combinations...\n",md5_hash_string);
    cudaMemcpy(result,dev_result, sizeof(uint32_t)*4,cudaMemcpyDeviceToHost);
    char possibleKey[7] // This is a bad duplicate.
-   intToString(result[0], possibleKey)
+   intToString(result[0], possibleKey);
 
    printf("Please Work!!: %s \n",possibleKey);
    cudaFree(dev_md5Target);
