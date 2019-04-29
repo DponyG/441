@@ -56,7 +56,7 @@
    return sum;
  };
  
- __global__ void crack(int* result, int* md5Target){
+ __global__ void crack(int* result, uint32_t* md5Target){
    printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
    uint32_t hashResult1, hashResult2, hashResult3, hashResult4;
    char *possibleKey = (char *) malloc(sizeof(char)*7);
