@@ -1,3 +1,11 @@
+/*Samuel Grenon
+  CS441
+  sobel- cpu.cu
+  A Sobel Filter using the gpu
+  with the template provided by Dr. Mock
+/*
+
+
 /***********************************************************************
  * sobel-cpu.cu
  *
@@ -93,14 +101,14 @@ int main()
     // Apply sobel operator to pixels, ignoring the borders
     FIBITMAP *bitmap = FreeImage_Allocate(imgWidth, imgHeight, 24);
     char *dev_pixels;
-    char *dev_pixelReturn;
+    char *dev_cpuPixel;
     char *resultPixels = (char *) malloc(sizeof(char)*imgWidth*imgHeight);
     cudaMalloc((void**) &dev_pixels, sizeof(char)*imgWidth*imgHeight);
-    cudaMalloc((void**) &dev_pixelReturn, sizeof(char)*imgWidth*imgHeight);
+    cudaMalloc((void**) &dev_cpuPixel, sizeof(char)*imgWidth*imgHeight);
     cudaMemcpy(dev_pixels, pixels, sizeof(char)*imgWidth*imgHeight, cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_pixelReturn, resultPixels, sizeof(char)*imgWidth*imgHeight, cudaMemcpyHostToDevice);
-    sobel<<<numBlocks, numThreads>>>(dev_pixelReturn, imgWidth, imgHeight, dev_pixels);
-    cudaMemcpy(resultPixels, dev_pixelReturn, sizeof(char)*imgWidth*imgHeight, cudaMemcpyDeviceToHost);
+    cudaMemcpy(dev_cpuPixel, resultPixels, sizeof(char)*imgWidth*imgHeight, cudaMemcpyHostToDevice);
+    sobel<<<numBlocks, numThreads>>>(dev_cpuPixel, imgWidth, imgHeight, dev_pixels);
+    cudaMemcpy(resultPixels, dev_cpuPixel, sizeof(char)*imgWidth*imgHeight, cudaMemcpyDeviceToHost);
     for (int i = 1; i < imgWidth-1; i++)
     {
       for (int j = 1; j < imgHeight-1; j++)
