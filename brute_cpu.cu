@@ -19,7 +19,7 @@
  // Convert a decimal number (starting at 0) to a corresponding 6 letter string
  // using base 26 to represent the string
  // s must be big enough to hold 6 chars plus a null (7 chars total)
- __device__ void intToString(int num, char *s)
+ __device__ __host__ void intToString(int num, char *s)
  {
    int ones = (num) % 26;
    int twentySix = (num / 26) % 26;
