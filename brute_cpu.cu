@@ -112,7 +112,7 @@
    cudaMalloc((void **) &dev_result, sizeof(int));
    cudaMemcpy(dev_md5Target, md5Target, 4*sizeof(uint32_t),cudaMemcpyHostToDevice);
    
-   dim3 numThreads(numThreadsPerBlock, 2, 1);
+   dim3 numThreads(13, 2, 1);
    dim3 numBlocks(26, 26, 1);
      
    crack<<<numBlocks,numThreads>>>(dev_result, dev_md5Target);
