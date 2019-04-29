@@ -110,14 +110,11 @@
 
    cudaMalloc((void **) &dev_md5Target,sizeof(uint32_t)*4);
    cudaMalloc((void **) &dev_result, sizeof(int));
-   cudaMemcpy(dev_md5Target, md5Target, 4*sizeof(int),cudaMemcpyHostToDevice);
+   cudaMemcpy(dev_md5Target, md5Target, 4*sizeof(uint32_t),cudaMemcpyHostToDevice);
    
      
    crack<<<26,26>>>(dev_result, dev_md5Target);
-   printf("Error: %s \n",cudaGetErrorName(cudaGetLastError()));
-   printf("ErrorDes: %s \n",cudaGetErrorString(cudaGetLastError()));
-   printf("Working on cracking the md5 key %s by trying all key combinations...\n",md5_hash_string);
-   cudaMemcpy(result,dev_result, sizeof(uint32_t)*4,cudaMemcpyDeviceToHost);
+   cudaMemcpy(result,dev_result, sizeof(int),cudaMemcpyDeviceToHost);
    char possibleKey[7];// This is a bad duplicate.
    intToString(result[0], possibleKey);
 
