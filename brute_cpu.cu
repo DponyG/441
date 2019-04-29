@@ -86,9 +86,12 @@
    // This is the md5 hash string we are trying to crack
  //  char md5_hash_string[] = "070d912366b1cf46a01aaf93c99f907d";
    char md5_hash_string[] = "b381ce33225e82f0fd839d610c3832e5";
-   int md5Target[4];  // The md5 hash string extracted into four integers
+   //int md5Target[4];  // The md5 hash string extracted into four integers
  
+   int md5Target[1];
+
    // This loop extracts the md5 hash string into md5Target[0],[1],[2],[3]
+
    for(int i = 0; i < 4; i++)
    {
      char tmp[16];
@@ -103,7 +106,7 @@
    // we generate in a brute force way to test if it matches the
    // target
    int *dev_result;
-   uint32_t *dev_md5Target;
+   uint32_t *dev_md5Target = (uint32_t *) malloc(sizeof(uint32_t));
    int *result
 
    cudaMalloc((void **) &dev_md5Target,sizeof(uint32_t)*4);
