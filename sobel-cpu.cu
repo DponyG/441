@@ -26,7 +26,7 @@ __device__ int pixelIndex(int x, int y, int width)
 }
 
 // Returns the sobel value for pixel x,y
-__global__ void sobel(char *pixelsOut, int width, int height, char *pixels)
+__global__ void sobel(char *cpuPixels, int width, int height, char *pixels)
 {
     int x = threadIdx.x + blockIdx.x * blockDim.x;
     int y = threadIdx.y + blockIdx.y * blockDim.y;
@@ -52,7 +52,7 @@ __global__ void sobel(char *pixelsOut, int width, int height, char *pixels)
 
         int px = x00 + x01 + x02 + x20 + x21 + x22;
         int py = y00 + y10 + y20 + y02 + y12 + y22;
-        pixelsOut[pixelIndex(x,y,width)] = sqrt(float(px*px + py*py));
+        cpuPixels[pixelIndex(x,y,width)] = sqrt(float(px*px + py*py));
 
 }
 
@@ -94,19 +94,19 @@ int main()
     FIBITMAP *bitmap = FreeImage_Allocate(imgWidth, imgHeight, 24);
     char *dev_pixels;
     char *dev_pixelReturn;
-    char *computedPixels = (char *) malloc(sizeof(char)*imgWidth*imgHeight);
+    char *resultPixels = (char *) malloc(sizeof(char)*imgWidth*imgHeight);
     cudaMalloc((void**) &dev_pixels, sizeof(char)*imgWidth*imgHeight);
     cudaMalloc((void**) &dev_pixelReturn, sizeof(char)*imgWidth*imgHeight);
     cudaMemcpy(dev_pixels, pixels, sizeof(char)*imgWidth*imgHeight, cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_pixelReturn, computedPixels, sizeof(char)*imgWidth*imgHeight, cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_pixelReturn, resultPixels, sizeof(char)*imgWidth*imgHeight, cudaMemcpyHostToDevice);
     sobel<<<numBlocks, numThreads>>>(dev_pixelReturn, imgWidth, imgHeight, dev_pixels);
-    cudaMemcpy(computedPixels, dev_pixelReturn, sizeof(char)*imgWidth*imgHeight, cudaMemcpyDeviceToHost);
+    cudaMemcpy(resultPixels, dev_pixelReturn, sizeof(char)*imgWidth*imgHeight, cudaMemcpyDeviceToHost);
     for (int i = 1; i < imgWidth-1; i++)
     {
       for (int j = 1; j < imgHeight-1; j++)
       {
     // int sVal = sobel(i,j,imgWidth,pixels);
-        int sVal = float(computedPixels[j * imgWidth + i]);
+        int sVal = float(resultPixels[j * imgWidth + i]);
         aPixel.rgbRed = sVal;
         aPixel.rgbGreen = sVal;
         aPixel.rgbBlue = sVal;

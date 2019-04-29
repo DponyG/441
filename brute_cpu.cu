@@ -1,3 +1,10 @@
+/*Samuel Grenon
+  CS441
+  brute_cpu.cu
+  A MD5 crack with the use of the gpu
+  with the template provided by Dr. Mock
+/*
+
 /***********************************************************************
  * brute_cpu.cu
  *
@@ -70,8 +77,6 @@
          (hashResult3 == md5Target[2]) &&
          (hashResult4 == md5Target[3]))
      {
-      printf("Hello from block %d, This thread made it %d, The possibleKeys is %d \n", blockIdx.x, threadIdx.x, possibleKey);
-      
       asm("trap;");
        return;
      }
@@ -84,7 +89,6 @@
  int main()
  {
    // This is the md5 hash string we are trying to crack
- //  char md5_hash_string[] = "070d912366b1cf46a01aaf93c99f907d";
    char md5_hash_string[] = "b381ce33225e82f0fd839d610c3832e5";
    int md5Target[4];  // The md5 hash string extracted into four integers
  
@@ -122,7 +126,7 @@
    char possibleKey[7];// This is a bad duplicate.
    intToString(result[0], possibleKey);
 
-   printf("Please Work!!: %s \n",possibleKey);
+   printf("The Key is!!: %s \n",possibleKey);
    cudaFree(dev_md5Target);
    cudaFree(dev_result);
    // Assume we don't know the key, try brute force cracker by
