@@ -112,8 +112,10 @@
    cudaMalloc((void **) &dev_result, sizeof(int));
    cudaMemcpy(dev_md5Target, md5Target, 4*sizeof(uint32_t),cudaMemcpyHostToDevice);
    
+   dim3 numThreads(numThreadsPerBlock, 2, 1);
+   dim3 numBlocks(26, 26, 1);
      
-   crack<<<26,26>>>(dev_result, dev_md5Target);
+   crack<<<numBlocks,numThreads>>>(dev_result, dev_md5Target);
    cudaMemcpy(result,dev_result, sizeof(int),cudaMemcpyDeviceToHost);
    char possibleKey[7];// This is a bad duplicate.
    intToString(result[0], possibleKey);
