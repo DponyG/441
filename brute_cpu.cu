@@ -65,15 +65,15 @@
  
  __global__ void crack(int* result, uint32_t* md5Target){
    uint32_t hashResult1, hashResult2, hashResult3, hashResult4;
-   char *possibleKey = (char *) malloc(sizeof(char)*7);
+   char possibleKey[7];
 
-   int length = 6;
+   uint8_t length = 6;
    for (int i = 0; i < 26*26*26*26; i++){
      intToString(i+blockIdx.x*26*26*26*26*26+threadIdx.x*26*26*26*26, possibleKey); 
      md5Hash((unsigned char*) possibleKey, length, &hashResult1, &hashResult2, &hashResult3, &hashResult4);
      if ((hashResult1 == md5Target[0]) && (hashResult2 == md5Target[1]) &&
             (hashResult3 == md5Target[2]) && (hashResult4 == md5Target[3])) {
-          result[0] = i;
+          result[0] = i+blockIdx.x*26*26*26*26*26+threadIdx.x*26*26*26*26;
         }
    }
  };
@@ -112,10 +112,8 @@
    cudaMalloc((void **) &dev_result, sizeof(int));
    cudaMemcpy(dev_md5Target, md5Target, 4*sizeof(uint32_t),cudaMemcpyHostToDevice);
    
-   dim3 numThreads(13, 2, 1);
-   dim3 numBlocks(26, 26, 1);
      
-   crack<<<numBlocks,numThreads>>>(dev_result, dev_md5Target);
+   crack<<<26,26>>>(dev_result, dev_md5Target);
    cudaMemcpy(result,dev_result, sizeof(int),cudaMemcpyDeviceToHost);
    char possibleKey[7];// This is a bad duplicate.
    intToString(result[0], possibleKey);
