@@ -76,7 +76,7 @@
          (hashResult3 == md5Target[2]) &&
          (hashResult4 == md5Target[3]))
      {
-       result[0] = i
+       result[0] = i;
      }
    }
  };
