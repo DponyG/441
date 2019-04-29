@@ -84,7 +84,7 @@
  int main()
  {
    // This is the md5 hash string we are trying to crack
-   char md5_hash_string[] = "b381ce33225e82f0fd839d610c3832e5";
+   char md5_hash_string[] = "070d912366b1cf46a01aaf93c99f907d";
    int md5Target[4];  // The md5 hash string extracted into four integers
  
    
